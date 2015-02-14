@@ -146,6 +146,7 @@ module.exports = function(req, res) {
 
 			var fileArray = stringed.split('"');
 			var inputArray = JSON.stringify(parsed).split('"');
+			var keyMatches = [];
 			console.log("Old: ");
 			console.log(fileArray);
 			console.log("New: ");
@@ -157,14 +158,12 @@ module.exports = function(req, res) {
 					if (fileArray[i] === inputArray[k]) {
 						fileArray[i+2] = inputArray[k+2];
 						console.log(fileArray[i] + ": this key has a match.  patch completed");
+						keyMatches.push(fileArray[i]);
 					} else {
 						console.log(fileArray[i] + ": this key doesn't match");
 					}
 				}
 			}
-
-			console.log("Transformed: ");
-			console.log(fileArray);
 
 			var finalObject = "{";
 
@@ -177,14 +176,13 @@ module.exports = function(req, res) {
 
 			finalObject += "}";
 
-			console.log(finalObject);
+			console.log("Transformed: " + finalObject);
 			
 			res.writeHead(200, {
 				'Content-Type': 'application/json'
 			});
-			res.write(JSON.stringify(parsed));
+			res.write(JSON.stringify({keys_patched: keyMatches.toString()}));
 			res.end(fs.writeFileSync(poster(postName), finalObject));
 		});
-
 	} 
 };
