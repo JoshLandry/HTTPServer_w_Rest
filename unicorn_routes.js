@@ -4,7 +4,7 @@ var fs = require('fs');
 
 module.exports = function(req, res) {
 	if (req.method === 'POST') {
-		var input = '';
+		var input = ''; // jshint ignore:line
 
 		req.on('data', function(data) {
 			input += data.toString('utf-8');
@@ -22,7 +22,13 @@ module.exports = function(req, res) {
   						return './' + postName +'.json';
 					}
 			};
-			parsed.system_says = "this shit was posted";
+
+			if (poster(postName) ===  'errorfile.json') {
+			parsed.system_says = "file already exists, data stored in errorfile.";
+			} else {
+			parsed.system_says = "this shit was posted.";
+			}
+
 			res.writeHead(200, {
 				'Content-Type': 'application/json'
 			});
@@ -32,7 +38,7 @@ module.exports = function(req, res) {
 		});
 
 	}	else if (req.method === 'PUT') {
-		var input = '';
+		var input = ''; // jshint ignore:line
 
 		req.on('data', function(data) {
 			input += data.toString('utf-8');
@@ -65,7 +71,7 @@ module.exports = function(req, res) {
 		});
 
 	} else if (req.method === 'GET') {
-		var input = '';
+		var input = ''; // jshint ignore:line
 
 		req.on('data', function(data) {
 			input += data.toString('utf-8');
@@ -93,7 +99,7 @@ module.exports = function(req, res) {
 			res.end();
 		});
 	} else if (req.method === 'DELETE') {
-		var input = '';
+		var input = ''; // jshint ignore:line
 
 		req.on('data', function(data) {
 			input += data.toString('utf-8');
@@ -106,7 +112,7 @@ module.exports = function(req, res) {
   					fs.unlinkSync('.' + postName +'.json');
   					return 'Your file deleted, master';
 				} catch(e) {
-  					return 'No such file, bitch';
+  					return 'No such file.';
 				}
 
 			};
@@ -117,7 +123,7 @@ module.exports = function(req, res) {
 			res.end();
 		});
 	} else if (req.method === 'PATCH') {
-		var input = '';
+		var input = ''; // jshint ignore:line
 
 		req.on('data', function(data) {
 			input += data.toString('utf-8');
@@ -172,7 +178,7 @@ module.exports = function(req, res) {
 				if (fileArray[j] !== "system_says") {
 					finalObject += ',';
 				}
-			};
+			}
 
 			finalObject += "}";
 

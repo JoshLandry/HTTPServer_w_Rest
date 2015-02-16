@@ -11,11 +11,11 @@ var server = http.createServer(function(req,res) {
 	if (typeof(routes[req.url]) === 'function') {
 		routes[req.url](req, res);
 	} else {
-		res.writeHEad(404, {
+		res.writeHead(404, {
 			'Content-Type': 'application/json'
 		});
 
-		res.write(JSON.stringify({msg: 'page not found'}));
+		res.write(JSON.stringify({system_says: '404: Nothing here.'}));
 		res.end();
 	}
 });
